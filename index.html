@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>송림제 안내</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 한 장짜리 모바일 안내지. 소나무 숲색 표지 + 그리스 메안드로스 띠 → 입체감 있는 학교 지도 → 공연 시간표 → 부스 */
+:root{
+  --bg:#F2F5F1;
+  --paper:#FFFFFF;
+  --ink:#14281F;
+  --muted:#5A6B62;
+  --line:#D3DDD6;
+  --pine:#1E4A37;
+  --pine-2:#3F6E57;
+  --pine-soft:#DCE8DF;
+  --gold:#C49A2C;
+  --gold-soft:#F3E6BE;
+  --on-pine:#F4F1E4;
+  --bldg:#FFFFFF;
+  /* 지도 */
+  --m-ground:#E6EEE7;
+  --m-shadow:#C6D4C9;
+  --m-road:#DCE2DD;
+  --m-lane:#FFFFFF;
+  --m-grass:#C9DFCC;
+  --m-grass-2:#BFD8C3;
+  --m-track:#A9C3B1;
+  --m-edge:#AFC0B5;
+  --f-display:"Song Myung","Nanum Myeongjo","AppleMyungjo",serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1813;--paper:#14231B;--ink:#E6EEE8;--muted:#9AABA1;--line:#28392F;
+  --pine:#173B2B;--pine-2:#2E5A45;--pine-soft:#1C3227;--gold:#DDB654;--gold-soft:#3A3115;--on-pine:#F1EEDF;--bldg:#22362C;
+  --m-ground:#172A20;--m-shadow:#0B1510;--m-road:#22302A;--m-lane:#3A4A42;--m-grass:#1F3B2A;--m-grass-2:#1B3425;--m-track:#2D4A3A;--m-edge:#34493E;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1813;--paper:#14231B;--ink:#E6EEE8;--muted:#9AABA1;--line:#28392F;
+  --pine:#173B2B;--pine-2:#2E5A45;--pine-soft:#1C3227;--gold:#DDB654;--gold-soft:#3A3115;--on-pine:#F1EEDF;--bldg:#22362C;
+  --m-ground:#172A20;--m-shadow:#0B1510;--m-road:#22302A;--m-lane:#3A4A42;--m-grass:#1F3B2A;--m-grass-2:#1B3425;--m-track:#2D4A3A;--m-edge:#34493E;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;margin:0;text-wrap:balance}
+h2{font-size:30px;line-height:1.15}
+p{margin:0}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--gold)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+section{display:flex;flex-direction:column;gap:14px;scroll-margin-top:70px}
+.sec-head{display:flex;flex-direction:column;gap:2px}
+.hint{color:var(--muted);font-size:14px}
+
+/* 표지: 오디세이아의 밤바다 (항상 같은 색 – 어두운 바다 위 금빛) */
+.hero{--sea-1:#0F2233;--sea-2:#18394A;--sea-3:#0A1824;--bronze:#D9B25A;--foam:#F3EBD3;
+  margin-top:20px;color:var(--foam);border-radius:20px;overflow:hidden;position:relative;
+  background:radial-gradient(120% 80% at 80% 0%,var(--sea-2),var(--sea-1) 55%,var(--sea-3))}
+.sky{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-body{position:relative;padding:26px 22px 0;display:flex;flex-direction:column;gap:6px}
+.hero .eyebrow{color:var(--bronze);letter-spacing:.24em}
+.hero h1{font-size:clamp(64px,22vw,104px);line-height:.9;letter-spacing:.02em;color:var(--bronze);text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.hero .tag{font-size:15px;opacity:.9;max-width:22ch}
+.voyage{position:relative;display:block;width:100%;height:auto;margin-top:-28px}
+.facts{position:relative;display:grid;grid-template-columns:repeat(3,1fr);background:var(--sea-3);border-top:1px solid color-mix(in srgb,var(--bronze) 35%,transparent)}
+.facts div{padding:12px 14px 16px;display:flex;flex-direction:column;min-width:0}
+.facts div+div{border-left:1px solid color-mix(in srgb,var(--foam) 14%,transparent)}
+.facts small{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--bronze)}
+.facts b{font-size:15px;line-height:1.3;font-weight:500}
+.facts .mono{font-family:var(--f-mono)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(2px) rotate(-1deg)}}
+.ship{transform-box:fill-box;transform-origin:50% 100%;animation:bob 5s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.ship{animation:none}}
+
+/* 탭 */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin-top:-24px;padding-block:10px}
+nav ul{list-style:none;margin:0;padding:4px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:12px}
+nav a{display:block;text-align:center;padding:8px 0;border-radius:8px;text-decoration:none;color:var(--ink);font-weight:500;font-size:14px}
+nav a:hover{background:var(--pine-soft)}
+
+/* 지도 */
+.map{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.map svg{display:block;width:100%;height:auto;border-radius:12px}
+.m-bg{fill:var(--m-ground)}
+.m-lot{fill:none;stroke:var(--m-edge);stroke-width:1;stroke-dasharray:1 4;stroke-linecap:round}
+.m-road{fill:var(--m-road)}
+.m-curb{stroke:var(--m-edge);stroke-width:1}
+.m-lane{stroke:var(--m-lane);stroke-width:1.6;stroke-dasharray:10 8;fill:none}
+.m-road-label{fill:var(--muted);font-family:var(--f-body);font-size:10px;font-weight:700;letter-spacing:.5em}
+.m-drive{fill:none;stroke:var(--m-road);stroke-width:12;stroke-linecap:round;stroke-linejoin:round}
+.m-shadow{fill:var(--m-shadow)}
+.m-bldg{fill:var(--bldg);stroke:var(--m-edge);stroke-width:.8}
+.m-roof{fill:none;stroke:var(--m-edge);stroke-width:.6;opacity:.8}
+.m-track{fill:var(--m-track)}
+.m-lines{fill:none;stroke:var(--m-lane);stroke-width:1.2;opacity:.85}
+.m-park{fill:var(--m-road)}
+.m-stall{stroke:var(--m-lane);stroke-width:1.2}
+.m-p{fill:var(--pine-2)}
+.m-p-t{fill:var(--on-pine);font-family:var(--f-body);font-size:10px;font-weight:700}
+.m-label{fill:var(--muted);font-family:var(--f-body);font-size:10.5px;font-weight:500;letter-spacing:.04em;paint-order:stroke;stroke:var(--m-ground);stroke-width:3px;stroke-linejoin:round}
+.m-label.on-b{stroke:var(--bldg)}
+.m-label.on-g{stroke:var(--m-grass)}
+.m-tree-a{fill:var(--pine)}
+.m-tree-b{fill:var(--pine-2)}
+.m-hot{cursor:pointer}
+.m-hot:focus{outline:none}
+.m-hall{fill:var(--pine)}
+.m-hall-in{fill:none;stroke:var(--gold);stroke-width:.8;opacity:.8}
+.m-hall-t{fill:var(--on-pine);font-family:var(--f-display);font-size:13px}
+.m-plaza{fill:var(--gold-soft);stroke:var(--gold);stroke-width:1.2}
+.m-pin{fill:var(--gold);stroke:var(--paper);stroke-width:1.6}
+.m-pin-t{fill:var(--pine);font-family:var(--f-mono);font-size:10px;font-weight:500}
+.m-hot:hover .m-hall,.m-hot:focus-visible .m-hall{fill:var(--pine-2)}
+.m-hot:hover .m-plaza,.m-hot:focus-visible .m-plaza{stroke-width:2.4}
+.m-route{fill:none;stroke:var(--gold);stroke-width:2.2;stroke-dasharray:4 4;stroke-linecap:round;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-16}}
+.m-gate-ring{fill:var(--paper);stroke:var(--gold);stroke-width:2}
+.m-gate-dot{fill:var(--pine)}
+.m-chip{fill:var(--pine)}
+.m-chip-t{fill:var(--on-pine);font-family:var(--f-body);font-size:9.5px;font-weight:700;letter-spacing:.06em}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12px;color:var(--muted);padding:0 4px 2px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend svg{width:18px;height:12px;border-radius:0}
+
+/* 공연 */
+.show{background:var(--pine);color:var(--on-pine);border-radius:20px;overflow:hidden}
+.show-head{padding:20px 20px 16px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.show-head .mono{font-size:clamp(28px,9vw,40px);line-height:1;color:var(--gold)}
+.show-head p{font-size:14px;opacity:.85;margin-top:6px}
+.linkbtn{background:none;border:1px solid color-mix(in srgb,var(--on-pine) 35%,transparent);color:var(--on-pine);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.linkbtn:hover{border-color:var(--gold)}
+.lineup{list-style:none;margin:0;padding:0}
+.lineup li{display:grid;grid-template-columns:104px 1fr;gap:12px;padding:11px 20px;border-top:1px solid color-mix(in srgb,var(--on-pine) 12%,transparent);align-items:baseline}
+.lineup li:nth-child(odd){background:color-mix(in srgb,var(--on-pine) 5%,transparent)}
+.lineup .t{font-family:var(--f-mono);font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums;white-space:nowrap}
+.lineup .n{font-size:16px;font-weight:500;min-width:0}
+.lineup .k{display:block;font-size:12px;opacity:.7;font-weight:400}
+.lineup li.open .n{font-family:var(--f-display);font-weight:400;font-size:19px}
+.lineup li.rest .n{opacity:.7;font-weight:400}
+.lineup li.close .n{font-family:var(--f-display);font-weight:400;font-size:19px;color:var(--gold)}
+.notice{margin:0 20px 18px;display:flex;flex-direction:column;gap:8px}
+.notice div{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.5}
+.notice svg{width:22px;height:22px;flex:none;margin-top:1px}
+.notice b{display:block;font-size:15px}
+.notice div{background:var(--gold);color:var(--pine)}
+.show-note{padding:14px 20px 18px;font-size:13px;opacity:.8;border-top:1px solid color-mix(in srgb,var(--on-pine) 12%,transparent)}
+
+/* 부스 */
+.booths{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.booth{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 16px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.booth svg{width:44px;height:44px;color:var(--gold)}
+.booth .num{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.booth h3{font-size:24px;line-height:1.15}
+.booth p{font-size:13px;color:var(--muted)}
+.booth .where{margin-top:auto;font-size:13px;font-weight:700;color:var(--pine);border-top:1px solid var(--line);padding-top:10px}
+:root[data-theme="dark"] .booth .where{color:var(--gold)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .booth .where{color:var(--gold)}}
+
+footer{text-align:center;font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:8px;align-items:center}
+footer svg{width:120px;height:12px}
+@media (max-width:360px){.booths{grid-template-columns:1fr}.lineup li{grid-template-columns:92px 1fr;padding-inline:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.m-route{animation:none}}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute;color:var(--gold)" aria-hidden="true">
+  <defs>
+    <pattern id="key" width="24" height="18" patternUnits="userSpaceOnUse">
+      <path d="M0 15 H20 V3 H6 V11 H14 V7" fill="none" stroke="currentColor" stroke-width="2"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="hero">
+    <svg class="sky" viewBox="0 0 400 300" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+      <g fill="#F3EBD3">
+        <circle cx="236" cy="28" r="1.2" opacity=".9"/><circle cx="262" cy="58" r=".9" opacity=".6"/><circle cx="214" cy="70" r=".8" opacity=".5"/>
+        <circle cx="300" cy="22" r="1" opacity=".7"/><circle cx="374" cy="74" r="1.1" opacity=".8"/><circle cx="388" cy="32" r=".8" opacity=".5"/>
+        <circle cx="180" cy="20" r=".9" opacity=".6"/><circle cx="160" cy="54" r=".7" opacity=".4"/><circle cx="330" cy="96" r=".8" opacity=".5"/>
+        <circle cx="282" cy="110" r=".7" opacity=".4"/><circle cx="356" cy="122" r="1" opacity=".7"/>
+      </g>
+      <!-- 북쪽 하늘의 큰곰자리, 오디세우스가 길잡이로 삼은 별 -->
+      <g stroke="#D9B25A" stroke-width=".6" opacity=".55" fill="none">
+        <path d="M262 38 L286 44 L304 40 L322 48 L330 66 L352 62 L348 44 L322 48"/>
+      </g>
+      <g fill="#D9B25A">
+        <circle cx="262" cy="38" r="1.6"/><circle cx="286" cy="44" r="1.6"/><circle cx="304" cy="40" r="1.6"/><circle cx="322" cy="48" r="1.6"/>
+        <circle cx="330" cy="66" r="1.6"/><circle cx="352" cy="62" r="1.6"/><circle cx="348" cy="44" r="1.6"/>
+      </g>
+      <path d="M372 20 a14 14 0 1 0 10 24 a11 11 0 1 1 -10 -24 z" fill="#F3EBD3" opacity=".85"/>
+      <text x="388" y="64" text-anchor="end" fill="#F3EBD3" opacity=".85" font-family="IBM Plex Sans KR, Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="9" font-weight="500" letter-spacing=".6">by 경문고 학생회</text>
+    </svg>
+    <div class="hero-body">
+      <span class="eyebrow">ΟΔΥΣΣΕΙΑ · 경문고등학교 축제</span>
+      <h1>송림제</h1>
+      <p class="tag">신화 속으로 떠나는 항해, 운화관에서 시작돼요</p>
+    </div>
+    <svg class="voyage" viewBox="0 0 400 130" aria-hidden="true">
+      <defs>
+        <pattern id="scroll" width="32" height="16" patternUnits="userSpaceOnUse">
+          <path d="M0 14 C9 14 11 3 19 3 C25 3 25 10 20.5 10 C17.5 10 17.5 6.5 20 6.5 M20.5 10 C25 12 27 14 32 14" fill="none" stroke="#D9B25A" stroke-width="1.6" stroke-linecap="round"/>
+        </pattern>
+      </defs>
+      <!-- 배: 흑화식 도기의 갤리선 -->
+      <g class="ship" fill="#D9B25A">
+        <path d="M232 70 H306 L308 62 H312 L306 72 H232 Z" opacity=".0"/>
+        <rect x="266" y="18" width="2.4" height="58"/>
+        <path d="M244 24 H292 L289 58 H247 Z" fill="#F3EBD3"/>
+        <path d="M245.5 31 H290.5 M246 38 H290 M246.5 45 H289.5 M247 52 H289" stroke="#0F2233" stroke-width="1.6"/>
+        <path d="M244 24 H292" stroke="#D9B25A" stroke-width="2.4"/>
+        <path d="M216 74 C230 82 300 84 322 76 L332 68 L326 66 L318 72 C290 76 240 74 222 66 C216 60 214 52 220 46 C212 48 210 62 216 74 Z"/>
+        <circle cx="314" cy="74" r="1.8" fill="#0F2233"/>
+        <path d="M234 80 L224 98 M246 82 L238 100 M258 83 L252 101 M270 83 L266 101 M282 83 L280 101 M294 81 L294 99 M306 79 L308 97" stroke="#D9B25A" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+      <!-- 바다 -->
+      <path d="M0 96 C40 90 70 102 110 96 S180 88 220 96 S300 104 340 96 S390 90 400 94 V130 H0 Z" fill="#0A1824" opacity=".55"/>
+      <rect x="0" y="104" width="400" height="16" fill="url(#scroll)"/>
+      <rect x="0" y="120" width="400" height="10" fill="#0A1824"/>
+    </svg>
+    <div class="facts">
+      <div><small>공연</small><b class="mono">16:00–19:00</b></div>
+      <div><small>공연장</small><b>운화관</b></div>
+      <div><small>부스</small><b>운화관 앞</b></div>
+    </div>
+  </header>
+
+  <nav aria-label="바로가기"><ul>
+    <li><a href="#map">지도</a></li>
+    <li><a href="#show">공연</a></li>
+    <li><a href="#booths">부스</a></li>
+  </ul></nav>
+
+  <section id="map">
+    <div class="sec-head">
+      <span class="eyebrow">CAMPUS MAP</span>
+      <h2>학교 지도</h2>
+      <p class="hint">운화관이나 부스를 누르면 자세한 안내로 넘어가요.</p>
+    </div>
+    <div class="map">
+      <svg viewBox="0 0 360 450" role="group" aria-label="경문고등학교 송림제 지도">
+        <defs>
+          <pattern id="mow" width="16" height="16" patternUnits="userSpaceOnUse">
+            <rect width="8" height="16" fill="var(--m-grass)"/><rect x="8" width="8" height="16" fill="var(--m-grass-2)"/>
+          </pattern>
+          <marker id="arw" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--gold)"/></marker>
+        </defs>
+
+        <!-- 바탕 -->
+        <rect class="m-bg" width="360" height="450"/>
+        <rect class="m-lot" x="38" y="16" width="268" height="418" rx="14"/>
+
+        <!-- 동작대로 -->
+        <rect class="m-road" x="318" y="0" width="42" height="450"/>
+        <line class="m-curb" x1="318" y1="0" x2="318" y2="450"/>
+        <line class="m-lane" x1="339" y1="0" x2="339" y2="450"/>
+        <text class="m-road-label" transform="translate(353 196) rotate(90)">동작대로</text>
+
+        <!-- 진입로 -->
+        <path class="m-drive" d="M296 76 V392 Q296 414 318 414"/>
+        <path class="m-drive" d="M296 330 Q296 352 274 352 H232"/>
+
+        <!-- 송림 -->
+        <g aria-hidden="true">
+          <circle class="m-tree-b" cx="15" cy="34" r="9"/><circle class="m-tree-a" cx="25" cy="48" r="7"/><circle class="m-tree-a" cx="10" cy="56" r="6"/>
+          <circle class="m-tree-a" cx="17" cy="104" r="9"/><circle class="m-tree-b" cx="26" cy="120" r="6"/><circle class="m-tree-b" cx="9" cy="124" r="6"/>
+          <circle class="m-tree-b" cx="15" cy="174" r="9"/><circle class="m-tree-a" cx="25" cy="190" r="7"/><circle class="m-tree-a" cx="10" cy="196" r="5"/>
+          <circle class="m-tree-a" cx="17" cy="244" r="9"/><circle class="m-tree-b" cx="26" cy="260" r="6"/><circle class="m-tree-b" cx="9" cy="264" r="6"/>
+          <circle class="m-tree-b" cx="15" cy="314" r="9"/><circle class="m-tree-a" cx="25" cy="330" r="7"/><circle class="m-tree-a" cx="10" cy="336" r="5"/>
+          <circle class="m-tree-a" cx="17" cy="384" r="9"/><circle class="m-tree-b" cx="26" cy="400" r="6"/><circle class="m-tree-b" cx="9" cy="404" r="6"/>
+          <circle class="m-tree-a" cx="164" cy="56" r="8"/><circle class="m-tree-b" cx="182" cy="48" r="6"/><circle class="m-tree-b" cx="198" cy="62" r="7"/>
+          <circle class="m-tree-b" cx="170" cy="96" r="6"/><circle class="m-tree-a" cx="190" cy="104" r="8"/><circle class="m-tree-a" cx="208" cy="92" r="5"/>
+          <circle class="m-tree-a" cx="277" cy="262" r="5"/><circle class="m-tree-b" cx="279" cy="290" r="5"/><circle class="m-tree-a" cx="276" cy="318" r="5"/><circle class="m-tree-b" cx="278" cy="386" r="5"/>
+        </g>
+
+        <!-- 주차장 -->
+        <rect class="m-park" x="56" y="36" width="80" height="80" rx="6"/>
+        <g aria-hidden="true">
+          <line class="m-stall" x1="64" y1="48" x2="82" y2="48"/><line class="m-stall" x1="64" y1="60" x2="82" y2="60"/><line class="m-stall" x1="64" y1="72" x2="82" y2="72"/><line class="m-stall" x1="64" y1="84" x2="82" y2="84"/><line class="m-stall" x1="64" y1="96" x2="82" y2="96"/><line class="m-stall" x1="64" y1="108" x2="82" y2="108"/>
+          <line class="m-stall" x1="110" y1="48" x2="128" y2="48"/><line class="m-stall" x1="110" y1="60" x2="128" y2="60"/><line class="m-stall" x1="110" y1="72" x2="128" y2="72"/><line class="m-stall" x1="110" y1="84" x2="128" y2="84"/><line class="m-stall" x1="110" y1="96" x2="128" y2="96"/><line class="m-stall" x1="110" y1="108" x2="128" y2="108"/>
+        </g>
+        <circle class="m-p" cx="96" cy="70" r="8"/><text class="m-p-t" x="96" y="73.5" text-anchor="middle">P</text>
+        <text class="m-label" x="96" y="94" text-anchor="middle">주차장</text>
+
+        <!-- 학교 건물 -->
+        <path class="m-shadow" transform="translate(3 4)" d="M56 140 H214 V168 H156 V196 H226 V228 H56 V196 H110 V168 H56 Z"/>
+        <path class="m-bldg" d="M56 140 H214 V168 H156 V196 H226 V228 H56 V196 H110 V168 H56 Z"/>
+        <path class="m-roof" d="M62 146 H208 V162 H62 Z M116 168 V196 M150 168 V196 M62 202 H220 V222 H62 Z"/>
+        <text class="m-label on-b" x="141" y="216" text-anchor="middle">학교 건물</text>
+
+        <!-- 운동장 -->
+        <rect class="m-shadow" x="59" y="238" width="170" height="180" rx="12"/>
+        <rect class="m-track" x="56" y="234" width="170" height="180" rx="12"/>
+        <rect x="68" y="246" width="146" height="156" rx="8" fill="url(#mow)"/>
+        <rect class="m-lines" x="76" y="254" width="130" height="140" rx="2"/>
+        <line class="m-lines" x1="76" y1="324" x2="206" y2="324"/>
+        <circle class="m-lines" cx="141" cy="324" r="15"/>
+        <rect class="m-lines" x="116" y="254" width="50" height="18"/>
+        <rect class="m-lines" x="116" y="376" width="50" height="18"/>
+        <text class="m-label on-g" x="141" y="356" text-anchor="middle">운동장</text>
+
+        <!-- 들어오는 길 -->
+        <path class="m-route" d="M334 414 H270 Q260 414 260 404 V237" marker-end="url(#arw)"/>
+
+        <!-- 운화관 -->
+        <g class="m-hot" id="hot-hall" tabindex="0" role="link" aria-label="운화관 공연 시간표로 이동">
+          <rect class="m-shadow" x="243" y="74" width="38" height="158" rx="7"/>
+          <path class="m-hall" d="M247 70 H271 Q278 70 278 77 V196 H240 V77 Q240 70 247 70 Z"/>
+          <rect class="m-hall-in" x="244" y="74" width="30" height="118" rx="4"/>
+          <text class="m-hall-t" x="259" y="116" text-anchor="middle">운</text>
+          <text class="m-hall-t" x="259" y="134" text-anchor="middle">화</text>
+          <text class="m-hall-t" x="259" y="152" text-anchor="middle">관</text>
+        </g>
+
+        <!-- 부스 -->
+        <g class="m-hot" id="hot-booth" tabindex="0" role="link" aria-label="운화관 앞 부스 안내로 이동">
+          <path class="m-plaza" d="M240 196 H278 V221 Q278 228 271 228 H247 Q240 228 240 221 Z"/>
+          <circle class="m-pin" cx="250" cy="212" r="8"/><text class="m-pin-t" x="250" y="215.5" text-anchor="middle">1</text>
+          <circle class="m-pin" cx="268" cy="212" r="8"/><text class="m-pin-t" x="268" y="215.5" text-anchor="middle">2</text>
+        </g>
+
+        <!-- 입구 -->
+        <g aria-hidden="true">
+          <circle class="m-gate-ring" cx="318" cy="414" r="6"/><circle class="m-gate-dot" cx="318" cy="414" r="2.5"/>
+          <rect class="m-chip" x="294" y="426" width="36" height="16" rx="8"/><text class="m-chip-t" x="312" y="437" text-anchor="middle">입구</text>
+        </g>
+      </svg>
+      <div class="legend" aria-hidden="true">
+        <span><svg viewBox="0 0 18 12"><rect width="18" height="12" rx="3" fill="var(--pine)"/></svg>공연장</span>
+        <span><svg viewBox="0 0 18 12"><rect x=".6" y=".6" width="16.8" height="10.8" rx="3" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/></svg>부스</span>
+        <span><svg viewBox="0 0 18 12"><line x1="1" y1="6" x2="17" y2="6" stroke="var(--gold)" stroke-width="2.2" stroke-dasharray="4 3" stroke-linecap="round"/></svg>들어오는 길</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="show">
+    <div class="sec-head">
+      <span class="eyebrow">STAGE · 운화관</span>
+      <h2>공연 시간표</h2>
+    </div>
+    <div class="show">
+      <div class="show-head">
+        <div><span class="mono">16:00–19:00</span><p>운화관 · 15개 무대</p></div>
+        <button type="button" class="linkbtn" id="toHall">지도에서 보기</button>
+      </div>
+      <div class="notice">
+        <div class="gift"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="9" width="18" height="5" rx="1"/><path d="M5 14v7h14v-7M12 9v12M12 9c-1.5-3-5-4-5-1.5S10 9 12 9zm0 0c1.5-3 5-4 5-1.5S14 9 12 9z"/></g></svg><span><b>경품 이벤트</b> 공연 중간에 경품을 나눠드려요! 끝까지 자리를 지켜 주세요.</span></div>
+        <div class="delay"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></svg><span><b>시간 변동 가능</b> 현장 상황에 따라 공연 시간이 조금 달라질 수 있어요.</span></div>
+      </div>
+      <ol class="lineup">
+        <li class="open"><span class="t">16:00–16:10</span><span class="n">무대를 열며<span class="k">개회사 · 축전</span></span></li>
+        <li><span class="t">16:10–16:30</span><span class="n">경문 윈드 오케스트라</span></li>
+        <li><span class="t">16:30–16:35</span><span class="n">김호연</span></li>
+        <li><span class="t">16:35–16:55</span><span class="n">B스킷<span class="k">Teacher’s Band</span></span></li>
+        <li><span class="t">16:55–17:00</span><span class="n">백호 보이즈</span></li>
+        <li><span class="t">17:00–17:15</span><span class="n">DYS</span></li>
+        <li class="rest"><span class="t">17:15–17:25</span><span class="n">쉬는 시간<span class="k">영상 상영 · 방송부</span></span></li>
+        <li><span class="t">17:25–17:35</span><span class="n">가브리엘</span></li>
+        <li><span class="t">17:35–17:45</span><span class="n">벌점 주지 마세요 + 상점 주지 마세요</span></li>
+        <li><span class="t">17:45–18:00</span><span class="n">센세이션</span></li>
+        <li><span class="t">18:00–18:05</span><span class="n">르센느</span></li>
+        <li><span class="t">18:05–18:15</span><span class="n">코르티솔 + 알파</span></li>
+        <li><span class="t">18:15–18:20</span><span class="n">김시현</span></li>
+        <li><span class="t">18:20–18:35</span><span class="n">천혼</span></li>
+        <li class="close"><span class="t">18:35–19:00</span><span class="n">러쉬<span class="k">Band</span></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="booths">
+    <div class="sec-head">
+      <span class="eyebrow">BOOTHS · 운화관 앞</span>
+      <h2>부스</h2>
+    </div>
+    <div class="booths">
+      <article class="booth">
+        <svg viewBox="0 0 44 44" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <path d="M4 14 L22 4 L40 14 Z"/><path d="M6 18 H38"/>
+            <path d="M10 18 V36 M18 18 V36 M26 18 V36 M34 18 V36"/>
+            <path d="M4 36 H40 M2 40 H42"/>
+          </g>
+        </svg>
+        <span class="num">부스 1</span>
+        <h3>신탁의 신전</h3>
+        <p>당신을 닮은 신을 만나보세요!</p>
+        <span class="where">운화관 앞</span>
+      </article>
+      <article class="booth">
+        <svg viewBox="0 0 44 44" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M2 34 Q8 29 14 34 T26 34 T38 34 T44 34"/>
+            <path d="M2 40 Q8 35 14 40 T26 40 T38 40 T44 40"/>
+            <path d="M24 26 V6 L34 3 V20"/>
+            <circle cx="21" cy="26" r="3.5"/><circle cx="31" cy="21" r="3.5"/>
+          </g>
+        </svg>
+        <span class="num">부스 2</span>
+        <h3>세이렌의 노래</h3>
+        <p>당신을 홀리는 노래가 들려온다...!</p>
+        <span class="where">운화관 앞</span>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <svg preserveAspectRatio="none" aria-hidden="true"><rect width="100%" height="12" fill="url(#key)"/></svg>
+    <span>송림제 · 경문고등학교</span>
+  </footer>
+</div>
+
+<script>
+const go=id=>document.getElementById(id).scrollIntoView({block:"start"});
+[["hot-hall","show"],["hot-booth","booths"]].forEach(([g,t])=>{
+  const el=document.getElementById(g);
+  el.addEventListener("click",()=>go(t));
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go(t)}});
+});
+document.getElementById("toHall").addEventListener("click",()=>go("map"));
+</script>
+
+</body>
+</html>
